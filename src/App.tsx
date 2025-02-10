@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Truck, 
   DollarSign, 
@@ -17,10 +17,14 @@ import {
   Moon
 } from 'lucide-react';
 import { AnimatedSection } from './components/AnimatedSection';
+import { LoadingScreen } from './components/LoadingScreen';
+import { WelcomeOverlay } from './components/WelcomeOverlay';
 import About from './pages/About';
 import { useTheme } from './context/ThemeContext';
 
 function Home() {
+  const { theme } = useTheme();
+  
   return (
     <>
       {/* Hero Section */}
@@ -79,8 +83,10 @@ function Home() {
       <AnimatedSection className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-gray-900">Why Choose TruckerBid</h2>
-            <p className="mt-4 text-lg text-gray-600">
+            <h2 className={`text-3xl font-bold ${theme === 'dark' ? 'text-golden-100' : 'text-gray-900'}`}>
+              Why Choose TruckerBid
+            </h2>
+            <p className={`mt-4 text-lg ${theme === 'dark' ? 'text-golden-300' : 'text-gray-600'}`}>
               Our platform offers comprehensive solutions for modern logistics challenges
             </p>
           </div>
@@ -88,31 +94,35 @@ function Home() {
           <div className="mt-16 grid md:grid-cols-3 gap-8">
             {[
               {
-                icon: <BarChart3 className="h-8 w-8 text-primary-600" />,
+                icon: <BarChart3 className={`h-8 w-8 ${theme === 'dark' ? 'text-golden-400' : 'text-primary-600'}`} />,
                 title: "Real-time Bidding",
                 description: "Get competitive rates through our transparent bidding system"
               },
               {
-                icon: <Shield className="h-8 w-8 text-primary-600" />,
+                icon: <Shield className={`h-8 w-8 ${theme === 'dark' ? 'text-golden-400' : 'text-primary-600'}`} />,
                 title: "Secure Payments",
                 description: "Protected transactions and escrow services for peace of mind"
               },
               {
-                icon: <MapPin className="h-8 w-8 text-primary-600" />,
+                icon: <MapPin className={`h-8 w-8 ${theme === 'dark' ? 'text-golden-400' : 'text-primary-600'}`} />,
                 title: "Route Optimization",
                 description: "AI-powered routes to maximize efficiency and reduce costs"
               }
             ].map((feature, index) => (
               <motion.div 
                 key={index} 
-                className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
+                className={`${theme === 'dark' ? 'bg-dark-card' : 'bg-white'} p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2`}
                 whileHover={{ scale: 1.02 }}
               >
-                <div className="bg-primary-50 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                <div className={`${theme === 'dark' ? 'bg-golden-900/20' : 'bg-primary-50'} w-16 h-16 rounded-full flex items-center justify-center mb-4`}>
                   {feature.icon}
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900">{feature.title}</h3>
-                <p className="mt-2 text-gray-600">{feature.description}</p>
+                <h3 className={`text-xl font-semibold ${theme === 'dark' ? 'text-golden-200' : 'text-gray-900'}`}>
+                  {feature.title}
+                </h3>
+                <p className={`mt-2 ${theme === 'dark' ? 'text-golden-300' : 'text-gray-600'}`}>
+                  {feature.description}
+                </p>
               </motion.div>
             ))}
           </div>
@@ -173,7 +183,9 @@ function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl font-bold text-gray-900">Benefits for Everyone</h2>
+              <h2 className={`text-3xl font-bold ${theme === 'dark' ? 'text-golden-100' : 'text-gray-900'}`}>
+                Benefits for Everyone
+              </h2>
               <div className="mt-8 space-y-6">
                 {[
                   {
@@ -197,14 +209,16 @@ function Home() {
                 ].map((group, index) => (
                   <motion.div 
                     key={index} 
-                    className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow"
+                    className={`${theme === 'dark' ? 'bg-dark-card border border-golden-800/30' : 'bg-white'} p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow`}
                     whileHover={{ scale: 1.02 }}
                   >
-                    <h3 className="text-xl font-semibold text-gray-900 mb-4">{group.title}</h3>
+                    <h3 className={`text-xl font-semibold ${theme === 'dark' ? 'text-golden-200' : 'text-gray-900'} mb-4`}>
+                      {group.title}
+                    </h3>
                     <ul className="space-y-3">
                       {group.benefits.map((benefit, benefitIndex) => (
-                        <li key={benefitIndex} className="flex items-center text-gray-600">
-                          <DollarSign className="h-5 w-5 text-primary-600 mr-2" />
+                        <li key={benefitIndex} className={`flex items-center ${theme === 'dark' ? 'text-golden-300' : 'text-gray-600'}`}>
+                          <DollarSign className={`h-5 w-5 ${theme === 'dark' ? 'text-golden-400' : 'text-primary-600'} mr-2`} />
                           {benefit}
                         </li>
                       ))}
@@ -397,35 +411,101 @@ function Home() {
 function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const { theme, toggleTheme } = useTheme();
+  const [isLoading, setIsLoading] = useState(true);
+  const [showWelcome, setShowWelcome] = useState(false);
+  const [showContent, setShowContent] = useState(false);
+
+  const handleLoadingComplete = () => {
+    setIsLoading(false);
+    setShowWelcome(true);
+    // Automatically transition to main content after 2 seconds
+    setTimeout(() => {
+      setShowWelcome(false);
+      setShowContent(true);
+    }, 2000);
+  };
+
+  const handleWelcomeComplete = () => {
+    setShowContent(true);
+  };
 
   return (
     <Router>
-      <div className={`min-h-screen ${theme === 'dark' ? 'bg-dark text-white' : 'bg-white text-gray-900'} transition-colors duration-200`}>
+      <AnimatePresence mode="wait">
+        {isLoading && (
+          <LoadingScreen onLoadingComplete={handleLoadingComplete} />
+        )}
+      </AnimatePresence>
+
+      <WelcomeOverlay show={showWelcome} onComplete={handleWelcomeComplete} />
+
+      <motion.div
+        className={`min-h-screen ${
+          theme === 'dark' 
+            ? 'bg-dark text-golden-100' 
+            : 'bg-white text-gray-900'
+        } transition-colors duration-200`}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: showContent ? 1 : 0 }}
+        transition={{ duration: 0.5 }}
+      >
         {/* Map Background */}
         <div className="map-background" />
         
         {/* Navigation */}
-        <nav className={`${theme === 'dark' ? 'bg-dark-card' : 'bg-white'} shadow-sm fixed w-full z-50 transition-colors duration-200`}>
+        <nav className={`${
+          theme === 'dark' 
+            ? 'bg-dark-card border-b border-golden-800/30' 
+            : 'bg-white'
+        } shadow-sm fixed w-full z-50 transition-colors duration-200`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between h-16 items-center">
               <Link to="/" className="flex items-center">
-                <Truck className="h-8 w-8 text-primary-600" />
-                <span className={`ml-2 text-xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>TruckerBid</span>
+                <Truck className={`h-8 w-8 ${
+                  theme === 'dark' ? 'text-golden-400' : 'text-primary-600'
+                }`} />
+                <span className={`ml-2 text-xl font-bold ${
+                  theme === 'dark' ? 'text-golden-200' : 'text-gray-900'
+                }`}>TruckerBid</span>
               </Link>
               
               {/* Desktop Navigation */}
               <div className="hidden md:flex items-center space-x-8">
-                <Link to="/" className={`${theme === 'dark' ? 'text-gray-300 hover:text-primary-400' : 'text-gray-600 hover:text-primary-600'} transition-colors`}>Home</Link>
-                <Link to="/about" className={`${theme === 'dark' ? 'text-gray-300 hover:text-primary-400' : 'text-gray-600 hover:text-primary-600'} transition-colors`}>About</Link>
-                <a href="#features" className={`${theme === 'dark' ? 'text-gray-300 hover:text-primary-400' : 'text-gray-600 hover:text-primary-600'} transition-colors`}>Features</a>
-                <a href="#how-it-works" className={`${theme === 'dark' ? 'text-gray-300 hover:text-primary-400' : 'text-gray-600 hover:text-primary-600'} transition-colors`}>How it Works</a>
+                <Link to="/" className={`${
+                  theme === 'dark' 
+                    ? 'text-golden-300 hover:text-golden-200' 
+                    : 'text-gray-600 hover:text-primary-600'
+                } transition-colors`}>Home</Link>
+                <Link to="/about" className={`${
+                  theme === 'dark' 
+                    ? 'text-golden-300 hover:text-golden-200' 
+                    : 'text-gray-600 hover:text-primary-600'
+                } transition-colors`}>About</Link>
+                <a href="#features" className={`${
+                  theme === 'dark' 
+                    ? 'text-golden-300 hover:text-golden-200' 
+                    : 'text-gray-600 hover:text-primary-600'
+                } transition-colors`}>Features</a>
+                <a href="#how-it-works" className={`${
+                  theme === 'dark' 
+                    ? 'text-golden-300 hover:text-golden-200' 
+                    : 'text-gray-600 hover:text-primary-600'
+                } transition-colors`}>How it Works</a>
                 <button 
                   onClick={toggleTheme}
-                  className={`p-2 rounded-full ${theme === 'dark' ? 'bg-gray-800 text-yellow-500 hover:bg-gray-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'} transition-colors`}
+                  className={`p-2 rounded-full ${
+                    theme === 'dark' 
+                      ? 'bg-golden-900/30 text-golden-400 hover:bg-golden-900/50' 
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  } transition-colors`}
                 >
                   {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
                 </button>
-                <button className="bg-primary-600 text-white px-6 py-2 rounded-full hover:bg-primary-700 transition-colors">
+                <button className={`${
+                  theme === 'dark'
+                    ? 'bg-golden-600 hover:bg-golden-700 text-black'
+                    : 'bg-primary-600 hover:bg-primary-700 text-white'
+                } px-6 py-2 rounded-full transition-colors`}>
                   Get Started
                 </button>
               </div>
@@ -434,13 +514,17 @@ function App() {
               <div className="md:hidden flex items-center gap-4">
                 <button 
                   onClick={toggleTheme}
-                  className={`p-2 rounded-full ${theme === 'dark' ? 'bg-gray-800 text-yellow-500' : 'bg-gray-100 text-gray-600'}`}
+                  className={`p-2 rounded-full ${
+                    theme === 'dark' 
+                      ? 'bg-golden-900/30 text-golden-400' 
+                      : 'bg-gray-100 text-gray-600'
+                  }`}
                 >
                   {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
                 </button>
                 <button
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className={theme === 'dark' ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'}
+                  className={theme === 'dark' ? 'text-golden-300' : 'text-gray-600'}
                 >
                   {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
                 </button>
@@ -457,12 +541,34 @@ function App() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.2 }}
             >
-              <div className={`px-2 pt-2 pb-3 space-y-1 sm:px-3 ${theme === 'dark' ? 'bg-dark-card' : 'bg-white'}`}>
-                <Link to="/" className={`block px-3 py-2 ${theme === 'dark' ? 'text-gray-300 hover:text-primary-400' : 'text-gray-600 hover:text-primary-600'} transition-colors`}>Home</Link>
-                <Link to="/about" className={`block px-3 py-2 ${theme === 'dark' ? 'text-gray-300 hover:text-primary-400' : 'text-gray-600 hover:text-primary-600'} transition-colors`}>About</Link>
-                <a href="#features" className={`block px-3 py-2 ${theme === 'dark' ? 'text-gray-300 hover:text-primary-400' : 'text-gray-600 hover:text-primary-600'} transition-colors`}>Features</a>
-                <a href="#how-it-works" className={`block px-3 py-2 ${theme === 'dark' ? 'text-gray-300 hover:text-primary-400' : 'text-gray-600 hover:text-primary-600'} transition-colors`}>How it Works</a>
-                <button className="w-full mt-2 bg-primary-600 text-white px-6 py-2 rounded-full hover:bg-primary-700 transition-colors">
+              <div className={`px-2 pt-2 pb-3 space-y-1 sm:px-3 ${
+                theme === 'dark' ? 'bg-dark-card' : 'bg-white'
+              }`}>
+                <Link to="/" className={`block px-3 py-2 ${
+                  theme === 'dark' 
+                    ? 'text-golden-300 hover:text-golden-200' 
+                    : 'text-gray-600 hover:text-primary-600'
+                } transition-colors`}>Home</Link>
+                <Link to="/about" className={`block px-3 py-2 ${
+                  theme === 'dark' 
+                    ? 'text-golden-300 hover:text-golden-200' 
+                    : 'text-gray-600 hover:text-primary-600'
+                } transition-colors`}>About</Link>
+                <a href="#features" className={`block px-3 py-2 ${
+                  theme === 'dark' 
+                    ? 'text-golden-300 hover:text-golden-200' 
+                    : 'text-gray-600 hover:text-primary-600'
+                } transition-colors`}>Features</a>
+                <a href="#how-it-works" className={`block px-3 py-2 ${
+                  theme === 'dark' 
+                    ? 'text-golden-300 hover:text-golden-200' 
+                    : 'text-gray-600 hover:text-primary-600'
+                } transition-colors`}>How it Works</a>
+                <button className={`w-full mt-2 ${
+                  theme === 'dark'
+                    ? 'bg-golden-600 hover:bg-golden-700 text-black'
+                    : 'bg-primary-600 hover:bg-primary-700 text-white'
+                } px-6 py-2 rounded-full transition-colors`}>
                   Get Started
                 </button>
               </div>
@@ -475,8 +581,11 @@ function App() {
           <Route path="/about" element={<About />} />
         </Routes>
 
-        {/* Footer */}
-        <footer className={`${theme === 'dark' ? 'bg-dark-card' : 'bg-gray-900'} text-white py-12 transition-colors duration-200`}>
+        <footer className={`${
+          theme === 'dark' 
+            ? 'bg-dark-card border-t border-golden-800/30 text-golden-100' 
+            : 'bg-gray-900 text-white'
+        } py-12 transition-colors duration-200`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-4 gap-8">
               <div>
@@ -521,7 +630,7 @@ function App() {
             </div>
           </div>
         </footer>
-      </div>
+      </motion.div>
     </Router>
   );
 }

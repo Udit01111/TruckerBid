@@ -17,7 +17,7 @@ body {
 }
 
 .map-background {
-  background-image: url('https://images.unsplash.com/photo-1585282263861-f55e341878f8?auto=format&fit=crop&q=80');
+  background-image: url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -29,4 +29,8 @@ body {
   height: 100%;
   pointer-events: none;
   z-index: -1;
+}
+
+.text-shadow-lg {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
