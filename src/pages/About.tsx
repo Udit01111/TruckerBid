@@ -1,6 +1,6 @@
 import React from 'react';
 import { AnimatedSection } from '../components/AnimatedSection';
-import { Truck, Award, Users, Globe } from 'lucide-react';
+import { Truck, Award, Users, Globe, Linkedin, Github } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
 export default function About() {
@@ -110,38 +110,101 @@ export default function About() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-8">
             {[
               {
-                name: "Sarah Johnson",
+                name: "Abhay Pathania",
                 role: "CEO & Founder",
-                image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80"
+                image: "https://i.postimg.cc/vmtSJDqt/3.png?auto=format&fit=crop&w=300&q=80",
+                description: "A 3rd-year B.Com student at Chandigarh University, TruckerBid empowers the public with affordable transport and truck owners with better earnings.",
+                linkedin: "https://www.linkedin.com/in/abhaypathania?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+                github: "https://github.com"
               },
               {
-                name: "Michael Chen",
+                name: "Udit",
                 role: "CTO",
-                image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80"
+                image: "https://i.postimg.cc/RFQ9bMfk/1.png?auto=format&fit=crop&w=300&q=80",
+                description: "Bringing software engineering expertise, specializing in AI and machine learning. He leads our technical innovation and platform development.",
+                linkedin: "https://www.linkedin.com/in/udit011",
+                github: "https://github.com/Udit01111"
               },
               {
-                name: "Emily Rodriguez",
+                name: "Pratham Rathi",
+                role: "Head of Finance",
+                image: "https://i.postimg.cc/QM8RxpWy/5.png?auto=format&fit=crop&w=300&q=80",
+                description: "Specializing in strategic finance, business pitches, and presentations.His insights and communication strengthen investor confidence and efficiency.",
+                linkedin: "https://www.linkedin.com/in/pratham-rathi-58ab39249/",
+                github: "https://github.com"
+              },
+              {
+                name: "Shivangini Sharma",
+                role: "Head of Research",
+                image: "https://i.postimg.cc/dVkFcRrm/2.png?auto=format&fit=crop&w=300&q=80",
+                description: "Driven by passion, conducts research at TruckBid, applying insights to support company objectives and business environments.",
+                linkedin: "https://www.linkedin.com/in/shivangini-sharma-9b8523255",
+                github: "https://github.com"
+              },
+              {
+                name: "Sarthak",
                 role: "Head of Operations",
-                image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=300&q=80"
+                image: "https://i.postimg.cc/kgxjSBmP/4.png?auto=format&fit=crop&w=300&q=80",
+                description: "He drives market research, aligning with truckers & shippers needs. Bridging innovation & logistics, optimizing pricing, workflows & solutions.",
+                linkedin: "https://linkedin.com",
+                github: "https://github.com"
               }
             ].map((member, index) => (
-              <div key={index} className={`text-center ${
-                theme === 'dark' ? 'bg-dark-card border border-golden-800/30' : ''
-              } p-6 rounded-lg`}>
-                <img
-                  src={member.image}
-                  alt={member.name}
-                  className="w-48 h-48 rounded-full mx-auto mb-4 object-cover hover:scale-105 transition-transform duration-300"
-                />
+              <div 
+                key={index} 
+                className={`text-center ${
+                  theme === 'dark' ? 'bg-dark-card border border-golden-800/30' : 'bg-white shadow-lg'
+                } p-6 rounded-lg group relative`}
+              >
+                <div className="relative">
+                  <img
+                    src={member.image}
+                    alt={member.name}
+                    className="w-48 h-48 rounded-full mx-auto mb-4 object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                  {/* Hover Description */}
+                  <div className={`absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
+                    theme === 'dark' 
+                      ? 'bg-dark-card/90 text-golden-100' 
+                      : 'bg-white/90 text-gray-800'
+                  } rounded-full p-4`}>
+                    <p className="text-sm">{member.description}</p>
+                  </div>
+                </div>
                 <h3 className={`text-xl font-semibold ${
                   theme === 'dark' ? 'text-golden-200' : 'text-gray-900'
                 }`}>{member.name}</h3>
-                <p className={theme === 'dark' ? 'text-golden-300' : 'text-gray-600'}>
+                <p className={`${
+                  theme === 'dark' ? 'text-golden-300' : 'text-gray-600'
+                } mb-3`}>
                   {member.role}
                 </p>
+                {/* Social Links */}
+                <div className="flex justify-center space-x-4">
+                  <a 
+                    href={member.linkedin} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className={`hover:scale-110 transition-transform ${
+                      theme === 'dark' ? 'text-golden-400 hover:text-golden-300' : 'text-primary-600 hover:text-primary-700'
+                    }`}
+                  >
+                    <Linkedin className="h-5 w-5" />
+                  </a>
+                  <a 
+                    href={member.github} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className={`hover:scale-110 transition-transform ${
+                      theme === 'dark' ? 'text-golden-400 hover:text-golden-300' : 'text-primary-600 hover:text-primary-700'
+                    }`}
+                  >
+                    <Github className="h-5 w-5" />
+                  </a>
+                </div>
               </div>
             ))}
           </div>

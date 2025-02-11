@@ -20,6 +20,7 @@ import { AnimatedSection } from './components/AnimatedSection';
 import { LoadingScreen } from './components/LoadingScreen';
 import { WelcomeOverlay } from './components/WelcomeOverlay';
 import About from './pages/About';
+import ParticlesComponent from "./components/ParticlesComponent";
 import { useTheme } from './context/ThemeContext';
 
 function Home() {
@@ -29,6 +30,9 @@ function Home() {
     <>
       {/* Hero Section */}
       <AnimatedSection className="pt-20 bg-gradient-to-r from-primary-50 to-secondary-50">
+        {/* Add Particles Here */}
+        <ParticlesComponent />
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
