@@ -58,10 +58,12 @@ function Home() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
               >
+                <a href="https://shipment-nine.vercel.app/" className="inline-block">
                 <button className="bg-primary-600 text-white px-8 py-3 rounded-full hover:bg-primary-700 transition-colors flex items-center justify-center group">
                   Post a Shipment
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </button>
+                </a>
                 <button className="border-2 border-primary-600 text-primary-600 px-8 py-3 rounded-full hover:bg-primary-50 transition-colors">
                   Join as Driver
                 </button>
